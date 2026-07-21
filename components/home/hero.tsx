@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import FadeIn from "./fade-in";
 import TicketPreview from "@/components/ticket/ticket-preview";
 import { Button } from "@/components/ui/button";
@@ -17,11 +19,15 @@ export default function Hero() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <Button size="lg">Create Your First Ticket</Button>
+            <Link href="/sign-up">
+              <Button size="lg">Create Your First Ticket</Button>
+            </Link>
 
-            <Button variant="outline" size="lg">
-              View Demo
-            </Button>
+            <Link href="/sign-up">
+              <Button variant="outline" size="lg">
+                View Demo
+              </Button>
+            </Link>
           </div>
         </div>
 
