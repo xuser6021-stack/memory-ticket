@@ -23,6 +23,8 @@ model User {
 
 model Memory {
   id          String   @id @default(cuid())
+  shareId     String   @unique @default(cuid())
+  isPublic    Boolean  @default(false)
   title       String
   description String?
   imageUrl    String
