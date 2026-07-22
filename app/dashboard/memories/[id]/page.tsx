@@ -1,8 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import DeleteMemoryButton from "@/components/memory/delete-memory-button";
+import MemoryTicket from "@/components/ticket/memory-ticket";
 import { prisma } from "@/lib/prisma";
 
 type MemoryDetailsPageProps = {
@@ -36,9 +36,8 @@ export default async function MemoryDetailsPage({ params }: MemoryDetailsPagePro
     notFound();
   }
 
-  const createdAt = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "long",
-  }).format(memory.createdAt);
+  const authorName =
+    [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email;
 
   return (
     <main className="mx-auto max-w-4xl p-6 md:p-8">
@@ -58,26 +57,7 @@ export default async function MemoryDetailsPage({ params }: MemoryDetailsPagePro
         <DeleteMemoryButton memoryId={memory.id} />
       </span>
 
-      <article className="mt-6 overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
-        <Image
-          src={memory.imageUrl}
-          alt={memory.title}
-          width={1200}
-          height={750}
-          unoptimized
-          className="h-auto w-full object-cover"
-          priority
-        />
-        <div className="space-y-5 p-6 md:p-8">
-          <div>
-            <h1 className="text-3xl font-bold">{memory.title}</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Created {createdAt}</p>
-          </div>
-          <p className="whitespace-pre-wrap leading-7 text-muted-foreground">
-            {memory.description || "No description provided."}
-          </p>
-        </div>
-      </article>
+      <MemoryTicket memory={memory} authorName={authorName} />
     </main>
   );
 }
