@@ -17,6 +17,7 @@ type MemoryFormProps = {
 export default function MemoryForm({ initialMemory }: MemoryFormProps) {
   const router = useRouter();
   const isEditing = Boolean(initialMemory);
+  const memoryId = initialMemory?.id;
   const [title, setTitle] = useState(initialMemory?.title ?? "");
   const [description, setDescription] = useState(initialMemory?.description ?? "");
   const [imageUrl, setImageUrl] = useState(initialMemory?.imageUrl ?? "");
@@ -32,7 +33,7 @@ export default function MemoryForm({ initialMemory }: MemoryFormProps) {
 
     try {
       const response = await fetch(
-        isEditing ? `/api/memories/${initialMemory.id}` : "/api/memories",
+        memoryId ? `/api/memories/${memoryId}` : "/api/memories",
         {
         method: isEditing ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -58,7 +59,7 @@ export default function MemoryForm({ initialMemory }: MemoryFormProps) {
         `Memory ${isEditing ? "updated" : "created"} successfully! Redirecting...`,
       );
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.push(isEditing ? `/dashboard/memories/${initialMemory.id}` : "/dashboard");
+      router.push(memoryId ? `/dashboard/memories/${memoryId}` : "/dashboard");
       router.refresh();
     } catch {
       setError(`Unable to ${isEditing ? "update" : "create"} memory. Please try again.`);

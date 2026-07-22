@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import DeleteMemoryButton from "@/components/memory/delete-memory-button";
 import { prisma } from "@/lib/prisma";
 
 type MemoryDetailsPageProps = {
@@ -53,6 +54,9 @@ export default async function MemoryDetailsPage({ params }: MemoryDetailsPagePro
       >
         Edit Memory
       </Link>
+      <span className="ml-4 inline-flex">
+        <DeleteMemoryButton memoryId={memory.id} />
+      </span>
 
       <article className="mt-6 overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
         <Image

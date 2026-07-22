@@ -86,3 +86,55 @@ export async function PATCH(request: Request, { params }: UpdateMemoryRouteProps
     );
   }
 }
+
+export async function DELETE(_request: Request, { params }: UpdateMemoryRouteProps) {
+  const { id } = await params;
+  const { userId: clerkId } = await auth();
+
+  if (!clerkId) {
+    return NextResponse.json(
+      { success: false, message: "Unauthorized" },
+      { status: 401 },
+    );
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { clerkId },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 },
+      );
+    }
+
+    const memory = await prisma.memory.findFirst({
+      where: {
+        id,
+        userId: user.id,
+      },
+    });
+
+    if (!memory) {
+      return NextResponse.json(
+        { success: false, message: "Memory not found" },
+        { status: 404 },
+      );
+    }
+
+    await prisma.memory.delete({
+      where: { id: memory.id },
+    });
+
+    return NextResponse.json({ success: true, message: "Memory deleted" });
+  } catch (error) {
+    console.error("Delete Memory Error:", error);
+
+    return NextResponse.json(
+      { success: false, message: "Unable to delete memory" },
+      { status: 500 },
+    );
+  }
+}
