@@ -51,12 +51,13 @@ export default function DownloadTicketButton({ title }: DownloadTicketButtonProp
   }
 
   return (
-    <div className="ml-4 inline-flex flex-col items-end gap-1 align-middle">
+    <div className="inline-flex flex-col items-start gap-1">
       <button
         type="button"
         onClick={handleDownload}
         disabled={isDownloading}
-        className="rounded-lg border px-4 py-2 text-sm font-medium hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+        aria-busy={isDownloading}
+        className="rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isDownloading ? "Preparing PNG..." : "Download PNG"}
       </button>

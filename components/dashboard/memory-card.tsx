@@ -21,13 +21,13 @@ export default function MemoryCard({ memory }: MemoryCardProps) {
 
   return (
     <Link href={`/dashboard/memories/${memory.id}`} className="block">
-      <article className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-shadow hover:shadow-md">
+      <article className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-shadow hover:shadow-md focus-within:ring-2 focus-within:ring-ring">
         <Image
           src={memory.imageUrl}
           alt={memory.title}
           width={800}
           height={500}
-          unoptimized
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="h-48 w-full object-cover"
         />
         <div className="space-y-3 p-5">

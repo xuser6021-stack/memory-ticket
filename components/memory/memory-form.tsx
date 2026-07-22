@@ -35,9 +35,9 @@ export default function MemoryForm({ initialMemory }: MemoryFormProps) {
       const response = await fetch(
         memoryId ? `/api/memories/${memoryId}` : "/api/memories",
         {
-        method: isEditing ? "PATCH" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, imageUrl }),
+          method: isEditing ? "PATCH" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, description, imageUrl }),
         },
       );
       const data: unknown = await response.json();
@@ -78,6 +78,8 @@ export default function MemoryForm({ initialMemory }: MemoryFormProps) {
           id="title"
           name="title"
           required
+          aria-describedby={error ? "memory-form-error" : undefined}
+          aria-invalid={Boolean(error)}
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           className="w-full rounded-lg border border-gray-300 px-4 py-3"
@@ -92,6 +94,7 @@ export default function MemoryForm({ initialMemory }: MemoryFormProps) {
           id="description"
           name="description"
           rows={5}
+          aria-describedby={error ? "memory-form-error" : undefined}
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           className="w-full rounded-lg border border-gray-300 px-4 py-3"
@@ -106,24 +109,25 @@ export default function MemoryForm({ initialMemory }: MemoryFormProps) {
             alt="Memory preview"
             width={800}
             height={500}
-            unoptimized
+            sizes="(max-width: 768px) 100vw, 672px"
             className="h-auto w-full rounded-xl"
           />
         )}
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p id="memory-form-error" role="alert" className="text-sm text-destructive">
           {error}
         </p>
       )}
 
-      {success && <p className="text-sm text-green-600">{success}</p>}
+      {success && <p role="status" className="text-sm text-green-600">{success}</p>}
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        aria-busy={isSubmitting}
+        className="rounded-lg bg-primary px-5 py-3 text-primary-foreground transition-colors hover:bg-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting
           ? isEditing

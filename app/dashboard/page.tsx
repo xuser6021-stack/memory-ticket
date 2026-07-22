@@ -26,13 +26,13 @@ export default async function DashboardPage() {
 
   return (
     <main className="mx-auto max-w-7xl p-6 md:p-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Welcome {user?.firstName ?? "User"}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-3xl font-bold tracking-tight">Welcome {user?.firstName ?? "User"}</h1>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <Link
             href="/dashboard/new"
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/80"
+            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             Create Memory
           </Link>

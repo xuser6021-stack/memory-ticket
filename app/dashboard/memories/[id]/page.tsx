@@ -19,19 +19,14 @@ export default async function MemoryDetailsPage({ params }: MemoryDetailsPagePro
     notFound();
   }
 
-  const user = await prisma.user.findUnique({
-    where: { clerkId },
-  });
+  const user = await prisma.user.findUnique({ where: { clerkId } });
 
   if (!user) {
     notFound();
   }
 
   const memory = await prisma.memory.findFirst({
-    where: {
-      id,
-      userId: user.id,
-    },
+    where: { id, userId: user.id },
   });
 
   if (!memory) {
@@ -43,28 +38,27 @@ export default async function MemoryDetailsPage({ params }: MemoryDetailsPagePro
 
   return (
     <main className="mx-auto max-w-4xl p-6 md:p-8">
-      <Link
-        href="/dashboard"
-        className="inline-flex text-sm font-medium text-muted-foreground hover:text-foreground"
-      >
-        ← Back to Dashboard
-      </Link>
-      <Link
-        href={`/dashboard/memories/${memory.id}/edit`}
-        className="ml-4 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/80"
-      >
-        Edit Memory
-      </Link>
-      <span className="ml-4 inline-flex">
+      <div className="flex flex-wrap items-center gap-3">
+        <Link
+          href="/dashboard"
+          className="inline-flex text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          Back to Dashboard
+        </Link>
+        <Link
+          href={`/dashboard/memories/${memory.id}/edit`}
+          className="inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          Edit Memory
+        </Link>
         <DeleteMemoryButton memoryId={memory.id} />
-      </span>
-      <DownloadTicketButton title={memory.title} />
-
-      <ShareMemoryControls
-        memoryId={memory.id}
-        shareId={memory.shareId}
-        initialIsPublic={memory.isPublic}
-      />
+        <DownloadTicketButton title={memory.title} />
+        <ShareMemoryControls
+          memoryId={memory.id}
+          shareId={memory.shareId}
+          initialIsPublic={memory.isPublic}
+        />
+      </div>
 
       <MemoryTicket memory={memory} authorName={authorName} />
     </main>

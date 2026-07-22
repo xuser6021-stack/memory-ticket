@@ -39,7 +39,6 @@ export default function MemoryTicket({ memory, authorName }: MemoryTicketProps) 
             alt={memory.title}
             fill
             priority
-            unoptimized
             sizes="(max-width: 768px) 100vw, 768px"
             className="object-cover"
           />

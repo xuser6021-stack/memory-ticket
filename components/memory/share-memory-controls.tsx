@@ -66,14 +66,16 @@ export default function ShareMemoryControls({
   }
 
   return (
-    <div className="mt-4 flex flex-wrap items-center gap-3">
+    <div className="flex flex-wrap items-center gap-3">
       <button
         type="button"
         role="switch"
         aria-checked={isPublic}
+        aria-label={isPublic ? "Disable public sharing" : "Enable public sharing"}
         onClick={updateSharing}
         disabled={isUpdating}
-        className="rounded-lg border px-4 py-2 text-sm font-medium hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+        aria-busy={isUpdating}
+        className="rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isUpdating ? "Updating..." : isPublic ? "Sharing On" : "Sharing Off"}
       </button>
@@ -81,7 +83,7 @@ export default function ShareMemoryControls({
         type="button"
         onClick={copyShareLink}
         disabled={!isPublic}
-        className="rounded-lg border px-4 py-2 text-sm font-medium hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+        className="rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
         Copy Share Link
       </button>
