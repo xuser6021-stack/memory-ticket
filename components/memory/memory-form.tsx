@@ -5,11 +5,21 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ImageUpload from "./image-upload";
 
-export default function MemoryForm() {
+type MemoryFormProps = {
+  initialMemory?: {
+    id: string;
+    title: string;
+    description: string | null;
+    imageUrl: string;
+  };
+};
+
+export default function MemoryForm({ initialMemory }: MemoryFormProps) {
   const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const isEditing = Boolean(initialMemory);
+  const [title, setTitle] = useState(initialMemory?.title ?? "");
+  const [description, setDescription] = useState(initialMemory?.description ?? "");
+  const [imageUrl, setImageUrl] = useState(initialMemory?.imageUrl ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -21,11 +31,14 @@ export default function MemoryForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/memories", {
-        method: "POST",
+      const response = await fetch(
+        isEditing ? `/api/memories/${initialMemory.id}` : "/api/memories",
+        {
+        method: isEditing ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, description, imageUrl }),
-      });
+        },
+      );
       const data: unknown = await response.json();
       const message =
         typeof data === "object" && data !== null && "message" in data
@@ -34,17 +47,21 @@ export default function MemoryForm() {
 
       if (!response.ok) {
         setError(
-          typeof message === "string" ? message : "Unable to create memory",
+          typeof message === "string"
+            ? message
+            : `Unable to ${isEditing ? "update" : "create"} memory`,
         );
         return;
       }
 
-      setSuccess("Memory created successfully! Redirecting...");
+      setSuccess(
+        `Memory ${isEditing ? "updated" : "created"} successfully! Redirecting...`,
+      );
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.push("/dashboard");
+      router.push(isEditing ? `/dashboard/memories/${initialMemory.id}` : "/dashboard");
       router.refresh();
     } catch {
-      setError("Unable to create memory. Please try again.");
+      setError(`Unable to ${isEditing ? "update" : "create"} memory. Please try again.`);
     } finally {
       setIsSubmitting(false);
     }
@@ -107,7 +124,13 @@ export default function MemoryForm() {
         disabled={isSubmitting}
         className="rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isSubmitting ? "Creating..." : "Create Memory"}
+        {isSubmitting
+          ? isEditing
+            ? "Updating..."
+            : "Creating..."
+          : isEditing
+            ? "Update Memory"
+            : "Create Memory"}
       </button>
     </form>
   );

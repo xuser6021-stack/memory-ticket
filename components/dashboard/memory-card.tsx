@@ -1,5 +1,6 @@
 import type { Memory } from "@prisma/client";
 import Image from "next/image";
+import Link from "next/link";
 
 type MemoryCardProps = {
   memory: Memory;
@@ -19,22 +20,24 @@ export default function MemoryCard({ memory }: MemoryCardProps) {
   }).format(memory.createdAt);
 
   return (
-    <article className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
-      <Image
-        src={memory.imageUrl}
-        alt={memory.title}
-        width={800}
-        height={500}
-        unoptimized
-        className="h-48 w-full object-cover"
-      />
-      <div className="space-y-3 p-5">
-        <h2 className="text-lg font-semibold">{memory.title}</h2>
-        <p className="text-sm text-muted-foreground">
-          {shortenDescription(memory.description)}
-        </p>
-        <p className="text-xs text-muted-foreground">Created {createdAt}</p>
-      </div>
-    </article>
+    <Link href={`/dashboard/memories/${memory.id}`} className="block">
+      <article className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-shadow hover:shadow-md">
+        <Image
+          src={memory.imageUrl}
+          alt={memory.title}
+          width={800}
+          height={500}
+          unoptimized
+          className="h-48 w-full object-cover"
+        />
+        <div className="space-y-3 p-5">
+          <h2 className="text-lg font-semibold">{memory.title}</h2>
+          <p className="text-sm text-muted-foreground">
+            {shortenDescription(memory.description)}
+          </p>
+          <p className="text-xs text-muted-foreground">Created {createdAt}</p>
+        </div>
+      </article>
+    </Link>
   );
 }
