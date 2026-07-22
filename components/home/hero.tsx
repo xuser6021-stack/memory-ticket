@@ -19,8 +19,8 @@ export default function Hero() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <Link href="/sign-up">
-              <Button size="lg">Create Your First Ticket</Button>
+            <Link href="/dashboard/new">
+            <Button size="lg">Create Your First Ticket</Button>
             </Link>
 
             <Link href="/sign-up">

@@ -1,13 +1,22 @@
+import { syncUser } from "@/lib/sync-user";
 import { UserButton } from "@clerk/nextjs";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const user = await syncUser();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6">
-      <h1 className="text-4xl font-bold">Dashboard</h1>
+    <main className="p-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold">
+          Welcome {user?.firstName ?? "User"} 👋
+        </h1>
 
-      <p>Welcome to Memory Ticket 🎉</p>
+        <UserButton afterSignOutUrl="/" />
+      </div>
 
-      <UserButton afterSignOutUrl="/" />
+      <p className="mt-6 text-muted-foreground">
+        Your account is now synced with the database.
+      </p>
     </main>
   );
 }
