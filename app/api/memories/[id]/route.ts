@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { syncUser } from "@/lib/sync-user";
 
 type UpdateMemoryRouteProps = {
   params: Promise<{ id: string }>;
@@ -39,9 +40,7 @@ export async function PATCH(request: Request, { params }: UpdateMemoryRouteProps
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: { clerkId },
-    });
+    const user = await syncUser();
 
     if (!user) {
       return NextResponse.json(
@@ -99,9 +98,7 @@ export async function DELETE(_request: Request, { params }: UpdateMemoryRoutePro
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { clerkId },
-    });
+    const user = await syncUser();
 
     if (!user) {
       return NextResponse.json(

@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
+import { syncUser } from "@/lib/sync-user";
 type ShareMemoryRouteProps = {
   params: Promise<{ id: string }>;
 };
@@ -31,9 +31,7 @@ export async function PATCH(request: Request, { params }: ShareMemoryRouteProps)
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: { clerkId },
-    });
+    const user = await syncUser();
 
     if (!user) {
       return NextResponse.json(
