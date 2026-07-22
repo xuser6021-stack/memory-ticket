@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DeleteMemoryButton from "@/components/memory/delete-memory-button";
 import ShareMemoryControls from "@/components/memory/share-memory-controls";
+import DownloadTicketButton from "@/components/ticket/download-ticket-button";
 import MemoryTicket from "@/components/ticket/memory-ticket";
 import { prisma } from "@/lib/prisma";
 
@@ -57,6 +58,7 @@ export default async function MemoryDetailsPage({ params }: MemoryDetailsPagePro
       <span className="ml-4 inline-flex">
         <DeleteMemoryButton memoryId={memory.id} />
       </span>
+      <DownloadTicketButton title={memory.title} />
 
       <ShareMemoryControls
         memoryId={memory.id}

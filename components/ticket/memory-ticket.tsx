@@ -14,6 +14,7 @@ export default function MemoryTicket({ memory, authorName }: MemoryTicketProps) 
 
   return (
     <article
+      id="memory-ticket"
       aria-labelledby="memory-ticket-title"
       className="group relative mx-auto mt-6 max-w-3xl transition-transform duration-300 hover:-translate-y-1"
     >
